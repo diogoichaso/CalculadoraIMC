@@ -33,6 +33,13 @@ class _CalculadoraIMCState extends State<CalculadoraIMC> {
   Color corResultado = Colors.white;
 
   @override
+  void dispose() {//libera a memória das variávies com a finalização do widget
+    peso = TextEditingController(text: '');
+    altura = TextEditingController(text: '');
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[300],
@@ -56,7 +63,7 @@ class _CalculadoraIMCState extends State<CalculadoraIMC> {
                           borderRadius: BorderRadius.circular(150),
                           border: Border.all(
                             width: 10,
-                            color: Colors.green,
+                            color: corResultado,
                           )),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -72,7 +79,7 @@ class _CalculadoraIMCState extends State<CalculadoraIMC> {
                             height: 12,
                           ),
                           Text(
-                            'Peso normal',
+                            '${classificacao}',
                             style: const TextStyle(
                               fontSize: 20,
                               color: Colors.green,
@@ -105,6 +112,15 @@ class _CalculadoraIMCState extends State<CalculadoraIMC> {
                               suffixText: 'kg'),
                           keyboardType: TextInputType.number,
                         ),
+                      ),
+                      Slider(
+                        activeColor: Colors.purple,
+                        value: 70,
+                        onChanged: (peso){
+                          
+                        },
+                        min: 50,
+                        max: 150,
                       ),
                     ],
                   ),
@@ -142,12 +158,24 @@ class _CalculadoraIMCState extends State<CalculadoraIMC> {
                 child: ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      double pesoN = double.parse(peso.text);
-                    double alturaN = double.parse(altura.text);
-                    print(peso.text);
-                    print(altura.text);
-                    imc = pesoN / (alturaN * alturaN);
-                    print(imc);  
+                      try {
+                        double pesoN = double.parse(peso.text);
+                        double alturaN = double.parse(altura.text);
+                        print(peso.text);
+                        print(altura.text);
+                        imc = pesoN / (alturaN * alturaN);
+                        print(imc);
+                        classificacao = getClassificacaoIMC(imc);
+                        print(classificacao);
+                        corResultado = getCorIMC(imc);
+                        print(corResultado);
+                      } on Exception {
+                        print('Digite um valor válido');
+                        imc = 0;
+                        classificacao = '';
+                        peso.text = '';
+                        altura.text = '';
+                      }
                     });
                   },
                   child: Text(
@@ -172,5 +200,37 @@ class _CalculadoraIMCState extends State<CalculadoraIMC> {
             ]),
       ),
     );
+  }
+}
+
+String getClassificacaoIMC(double imc) {
+  if (imc <= 18.5) {
+    return 'Abaixo do peso';
+  } else if (imc <= 24.9) {
+    return 'Peso normal';
+  } else if (imc <= 29.9) {
+    return 'Sobrepeso';
+  } else if (imc <= 34.9) {
+    return 'Obesidade grau I';
+  } else if (imc <= 39.9) {
+    return 'Obesidade grau II';
+  } else {
+    return 'Obesidade grau III';
+  }
+}
+
+Color getCorIMC(double imc) {
+  if (imc <= 18.5) {
+    return Colors.blue;
+  } else if (imc <= 24.9) {
+    return Colors.green;
+  } else if (imc <= 29.9) {
+    return Colors.yellow;
+  } else if (imc <= 34.9) {
+    return Colors.orange;
+  } else if (imc <= 39.9) {
+    return Color.fromARGB(255, 233, 85, 85);
+  } else {
+    return Color.fromARGB(255, 244, 54, 54);
   }
 }
