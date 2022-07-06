@@ -13,7 +13,7 @@ class _CalculadoraIMCState extends State<CalculadoraIMC> {
   TextEditingController altura = TextEditingController(text: '');
   double imc = 0;
   String classificacao = '';
-  Color corResultado = Colors.white;
+  Color corResultado = Colors.black;
   double valorPeso = 50;
   double valorAltura = 1.5;
 

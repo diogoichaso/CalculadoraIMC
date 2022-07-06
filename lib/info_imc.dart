@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class InfoIMC extends StatelessWidget {
   InfoIMC({
-    @required this.corResultado = Colors.white,
+    @required this.corResultado = Colors.black,
     @required this.imc = 0,
     @required this.classificacao = '',
   });
@@ -19,16 +19,16 @@ class InfoIMC extends StatelessWidget {
           borderRadius: BorderRadius.circular(150),
           border: Border.all(
             width: 10,
-            color: this.corResultado,
+            color: corResultado,
           )),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             '${imc.toStringAsFixed(2)}',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 42,
-              color: Colors.green,
+              color: corResultado,
             ),
           ),
           const SizedBox(
@@ -36,9 +36,9 @@ class InfoIMC extends StatelessWidget {
           ),
           Text(
             '${classificacao}',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 20,
-              color: Colors.green,
+              color: corResultado,
             ),
           ),
         ],
